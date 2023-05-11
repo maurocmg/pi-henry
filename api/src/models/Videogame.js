@@ -7,7 +7,6 @@ module.exports = (sequelize) => {
     id: { type: DataTypes.UUID, primaryKey: true },
     name: { type: DataTypes.STRING(50), allowNull: false },
     description: { type: DataTypes.STRING, allowNull: false },
-    platform: { type: DataTypes.STRING(50), allowNull: false },
     image: { type: DataTypes.STRING, allowNull: false },
     released: { type: DataTypes.DATEONLY, allowNull: false },
     rating: { type: DataTypes.INTEGER, allowNull: false,
