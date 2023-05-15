@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
     sequelize.define('genre', {
-        id: { type: DataTypes.UUID, primaryKey: true },
+        id: { type: DataTypes.INTEGER, primaryKey: true },
         name: { type: DataTypes.STRING(60), allowNull: false },
     })
 }
