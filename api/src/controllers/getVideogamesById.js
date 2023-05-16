@@ -26,9 +26,8 @@ const getVideogamesById = async ( req, res ) => {
     } else {
         const search = id.slice(1, -1)
         if (uuidValidate(id)){ 
-            const found = async (id) => { 
-                await getVideogameFromDatabase(id)
-            }
+            const found = await getVideogameFromDatabase(id)
+            
             if (found) {
                 res.status(200).json(found)
             } else {
