@@ -1,0 +1,41 @@
+
+.card {
+    background-color: #222;
+    color: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+    width: calc(30% - 2%); /* Restamos el 2% para dejar espacio entre las cards */
+    margin: 2%; /* Espacio inferior entre las cards */
+}
+  
+  .dark {
+    background-color: #222;
+  }
+  
+  .cardImage {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .cardContent {
+    text-align: center;
+  }
+  
+  .cardTitle {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .cardGenres {
+    font-size: 14px;
+  }
+  
+  .card:hover {
+    background-color: #333;
+    cursor: pointer;
+  }

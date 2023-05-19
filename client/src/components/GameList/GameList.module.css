@@ -1,0 +1,14 @@
+/* GameList.module.css */
+
+.gameList {
+    background-color: #333;
+    color: #fff;
+    /* Otros estilos para el modo oscuro */
+}
+
+.gameRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+  

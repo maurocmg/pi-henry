@@ -45,7 +45,14 @@ const getAllVideogames = async (req, res) => {
                             return {
                                 name: platform.platform.name
                             }
-                        }).map(obj => obj.name)
+                        }).map(obj => obj.name),
+                        //genres: game.genres,
+                        genres: game.genres.map( (genre) => {
+                             return {
+                                 genre: genre.name
+                             }
+                        }).map(obj => obj.genre) 
+                        //})
                     }
                 });
 
