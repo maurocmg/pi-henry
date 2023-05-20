@@ -6,8 +6,8 @@
     padding: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease;
-    width: calc(30% - 2%); /* Restamos el 2% para dejar espacio entre las cards */
-    margin: 2%; /* Espacio inferior entre las cards */
+    width: calc(30% - 2%); 
+    margin: 2%; 
 }
   
   .dark {

@@ -2,3 +2,22 @@
     background-color: #121212;
     color: #ffffff;
   }
+  
+  .filterOptions {
+    margin-top: 10px;
+  }
+  
+  label {
+    color: #ffffff;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  select {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }

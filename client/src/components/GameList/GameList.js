@@ -1,24 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Card from '../Card/Card';
-import styles from './GameList.module.css'; // Importa los estilos CSS
+import styles from './GameList.module.css';
 
-
-const GameList = () => {
+const GameList = ( { genreFilter, sortOrder } ) => {
   const [games, setGames] = useState([]);
-
+  
   useEffect(() => {
     const fetchGames = async () => {
       try {
         const response = await axios.get('http://localhost:3001/videogames');
-        setGames(response.data.videogames);
+        let filteredGames = response.data.videogames;
+
+        // Filtrar por género
+        if (genreFilter) {
+          filteredGames = filteredGames.filter((game) => game.genres.includes(genreFilter));
+        }
+
+        // Ordenar por clasificación
+        if (sortOrder === 'asc') {
+          filteredGames = filteredGames.sort((a, b) => a.rating - b.rating);
+        } else if (sortOrder === 'desc') {
+          filteredGames = filteredGames.sort((a, b) => b.rating - a.rating);
+        }
+
+        setGames(filteredGames);
       } catch (error) {
         console.error('Error fetching games:', error);
       }
     };
 
     fetchGames();
-  }, []);
+  }, [genreFilter, sortOrder]);
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const gamesPerPage = 15;

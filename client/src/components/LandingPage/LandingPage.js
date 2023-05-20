@@ -1,11 +1,11 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+//import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styles from './LandingPage.module.css'; // Importa los estilos CSS
 
 
 const LandingPage = () => {
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
     const history = useHistory();
   
     const handleButtonClick = () => {
