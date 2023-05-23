@@ -3,6 +3,30 @@
     color: #ffffff;
   }
   
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .addButton {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-family: "Arial", sans-serif;
+  }
+  
+  .addButton:hover {
+    background-color: #45a049;
+  }
+  
+  .addButton:active {
+    background-color: #3d8f3d;
+  }
+  
   .filterOptions {
     margin-top: 10px;
   }

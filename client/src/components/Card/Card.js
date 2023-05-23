@@ -1,17 +1,24 @@
 import React from 'react';
 import styles from './Card.module.css';
+import { useHistory, Link } from 'react-router-dom';
+
 
 const Card = ({ game }) => {
-  const { background_image, name, genres } = game;
+  const { id, background_image, name, genres } = game;
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.push(`/detail/${id}`);
+  };
 
   return (
-    <div className={`${styles.card} ${styles.dark}`}>
+    <Link to={`/detail/${id}`} className={`${styles.card} ${styles.dark}`}>
       <img src={background_image} alt={name} className={styles.cardImage} />
       <div className={styles.cardContent}>
         <h3 className={styles.cardTitle}>{name}</h3>
         <p className={styles.cardGenres}>{genres?.join(', ')}</p>
       </div>
-    </div>
+    </Link>
   );
 };
 

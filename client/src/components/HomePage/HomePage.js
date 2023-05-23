@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './HomePage.module.css';
 import SearchBar from '../SearchBar/SearchBar';
 import GameList from '../GameList/GameList';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -22,8 +23,10 @@ const HomePage = () => {
 
   return (
     <div className={styles.homePage}>
-      <SearchBar onSearch={handleSearch} />
-
+      <div className={styles.header}>
+        <SearchBar onSearch={handleSearch} />
+        <Link to="/form" className={styles.addButton}>Agregar juego</Link>
+      </div>
       <div className={styles.filterOptions}>
         <label htmlFor="genreFilter">Filtrar por género:</label>
         <select

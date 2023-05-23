@@ -13,13 +13,18 @@ const getVideogamesById = async ( req, res ) => {
     if (parseInt(id.toString())) {
         try {
             const response = await axios.get(`${API_URL}/games/${id}?key=${API_KEY}`);
-            const { name, description, background_image, released, rating, platforms } = response.data;
-            cleanplatforms = platforms.map( (platform) => {
+            let { name, description, background_image, released, rating, platforms, genres } = response.data;
+            platforms = platforms.map( (platform) => {
                 return {
                     name: platform.platform.name
-                }});
+                }}).map(obj => obj.name);
+            genres = genres.map( (genre) => {
+                return {
+                    genre: genre.name
+                }
+            }).map(obj => obj.genre);
             // res.status(200).json( { id, name, description, background_image, released, rating, platforms })
-            res.status(200).json({ id, name, description, background_image, released, rating, cleanplatforms })
+            res.status(200).json({ id, name, description, background_image, released, rating, platforms, genres })
         } catch (error) {
             res.status(500).json('error en axios')
         }
