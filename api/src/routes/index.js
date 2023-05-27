@@ -9,7 +9,7 @@ const getPlatforms = require('../handlers/getPlatforms.js');
 
 const router = Router();
 
-router.get('/videogames/name/', getVideogamesByName)
+router.get('/videogames/name', getVideogamesByName)
 router.get("/videogames/", getAllVideogames)
 router.get('/videogames/:id', getVideogamesById)
 router.post('/videogames', createVideogame)

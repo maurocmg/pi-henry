@@ -2,6 +2,7 @@ import React, { useEffect, useState, } from 'react';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
 import styles from './DetailPage.module.css';
+import { Link } from 'react-router-dom';
 
 
 const DetailPage = () => {
@@ -29,14 +30,25 @@ const DetailPage = () => {
 
   return (
     <div className={styles.detailPage}>
+      <Link to="/home" className={styles.backButton}>Volver a la página de inicio</Link>
       <h2 className={styles.title}>{name}</h2>
       <img className={styles.image} src={background_image} alt={name} />
-      <p>ID: {id}</p>
-      <p>Plataformas: {platforms.join(', ')}</p>
       <p dangerouslySetInnerHTML={{ __html: description }}></p>
-      <p>Fecha de lanzamiento: {released}</p>
-      <p>Rating: {rating}</p>
-      <p>Géneros: {genres.join(', ')}</p>
+      <p>
+        <span className={styles.detail}>ID:</span> {id} 
+      </p>
+      <p>
+        <span className={styles.detail}>Plataformas:</span> {platforms.join(', ')}
+      </p>
+      <p>
+        <span className={styles.detail}>Fecha de lanzamiento:</span> {released}
+      </p>
+      <p>
+        <span className={styles.detail}>Rating:</span> {rating}
+      </p>
+      <p>
+        <span className={styles.detail}>Géneros:</span> {genres.join(', ')}
+      </p>
     </div>
   );
 };

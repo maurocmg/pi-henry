@@ -54,7 +54,7 @@ const HomePage = () => {
         </select>
       </div>
 
-      <GameList genreFilter={genreFilter} sortOrder={sortOrder} />
+      <GameList genreFilter={genreFilter} sortOrder={sortOrder} searchTerm={searchTerm} />
     </div>
   );
 };

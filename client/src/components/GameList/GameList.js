@@ -3,18 +3,35 @@ import axios from 'axios';
 import Card from '../Card/Card';
 import styles from './GameList.module.css';
 
-const GameList = ( { genreFilter, sortOrder } ) => {
+const GameList = ({ genreFilter, sortOrder, searchTerm }) => {
   const [games, setGames] = useState([]);
   
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/videogames');
-        let filteredGames = response.data.videogames;
+          let filteredGames = []
+
+          if (!searchTerm) {
+            const response = await axios.get('http://localhost:3001/videogames');
+            filteredGames = response.data.videogames;
+          } else {
+            const response = await axios.get(
+              `http://localhost:3001/videogames/name?name=${searchTerm}`
+            );
+            filteredGames = response.data;
+          }
+        
 
         // Filtrar por género
         if (genreFilter) {
           filteredGames = filteredGames.filter((game) => game.genres.includes(genreFilter));
+        }
+
+        // Filtrar por término de búsqueda
+        if (searchTerm) {
+          filteredGames = filteredGames.filter((game) =>
+            game.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
         }
 
         // Ordenar por clasificación
@@ -31,7 +48,7 @@ const GameList = ( { genreFilter, sortOrder } ) => {
     };
 
     fetchGames();
-  }, [genreFilter, sortOrder]);
+  }, [genreFilter, sortOrder, searchTerm]);
 
 
   const [currentPage, setCurrentPage] = useState(1);

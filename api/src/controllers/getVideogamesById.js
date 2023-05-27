@@ -5,12 +5,13 @@ require('dotenv').config();
 const { API_KEY } = process.env;
 const API_URL = 'https://api.rawg.io/api';
 const uuidValidate = require('uuid-validate');
+const { response } = require('../app');
 
 
 const getVideogamesById = async ( req, res ) => {
     const { id } = req.params;
     console.log(id)
-    if (parseInt(id.toString())) {
+    if (!uuidValidate(id)) {
         try {
             const response = await axios.get(`${API_URL}/games/${id}?key=${API_KEY}`);
             let { name, description, background_image, released, rating, platforms, genres } = response.data;

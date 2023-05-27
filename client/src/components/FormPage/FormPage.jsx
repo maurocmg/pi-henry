@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from './FormPage.module.css';
+import { Link } from 'react-router-dom';
+
 
 const FormPage = () => {
   const [gameData, setGameData] = useState({
@@ -52,6 +54,11 @@ const FormPage = () => {
   return (
     <div className={styles.formPage}>
       <h2 className={styles.title}>Create New Game</h2>
+
+      {/* Agregar el botón para volver a HomePage */}
+      <Link to="/home" className={styles.backButton}>
+        &lt; Back to Home
+      </Link>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label htmlFor="name" className={styles.label}>Name:</label>

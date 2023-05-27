@@ -16,7 +16,7 @@ const getVideogamesByName = async (req, res) => {
     try {
         const response = await axios.get(`${API_URL}/games?search=${name}&page_size=15&key=${API_KEY}`);
         const games = response.data.results.map(game => {
-            return {
+            return { 
                 id: game.id, 
                 name: game.name, 
                 description: game.description,
@@ -27,7 +27,12 @@ const getVideogamesByName = async (req, res) => {
                     return {
                         name: platform.platform.name
                     }
-                })
+                }).map(obj => obj.name),
+                genres: game.genres?.map( (genre) => {
+                     return {
+                         genre: genre.name
+                     }
+                }).map(obj => obj.genre) 
             }
         })
         if (games.length === 0) {
