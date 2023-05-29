@@ -3,6 +3,7 @@ const axios = require('axios');
 require('dotenv').config();
 const { API_KEY } = process.env;
 const API_URL = 'https://api.rawg.io/api';
+const getVideogameFromDatabase = require('../handlers/getVideogameFromDatabase')
 
 // Controller para obtener todos los videogames de API
 // Hacemos petición a la API, y luego por cada juego recibido extraemos las propiedades que nos interesan. En el caso de platforms, también dejamos solo el nombre de las mismas. Pendiente de implementar mensaje de error.
@@ -58,8 +59,10 @@ const getAllVideogames = async (req, res) => {
             // console.log(i)
             i++
             }
-            const allfromDatabase = await getVideogameFromDatabase()
+            
+            let allfromDatabase = await getVideogameFromDatabase()
             videogames = [...videogames, ...allfromDatabase]
+           
 
 
             res.status(200).json({videogames})

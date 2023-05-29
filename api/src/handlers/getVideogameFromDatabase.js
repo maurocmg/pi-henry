@@ -6,30 +6,40 @@ const API_URL = 'https://api.rawg.io/api';
 const express = require('express');
 
 const getVideogameFromDatabase = async (id = null) => {
-    
-    let options = {
-        include: [
-          {
-            model: Genre,
-            attributes: ['name'], // Selecciona solo el atributo "name" del modelo Genre
-            through: { attributes: [] }, // No incluir atributos adicionales de la tabla de enlace
-          },
-          {
-            model: Platform,
-            attributes: ['name'], // Selecciona solo el atributo "name" del modelo Platform
-            through: { attributes: [] }, // No incluir atributos adicionales de la tabla de enlace
-          },
-        ],
-      };
+  let options = {
+    include: [
+      {
+        model: Genre,
+        attributes: ['name'],
+        through: { attributes: [] },
+      },
+      {
+        model: Platform,
+        attributes: ['name'],
+        through: { attributes: [] },
+      },
+    ],
+  };
 
-    if (id) {
-        const response = await Videogame.findByPk(id, options)
-        return response
-    } else {
-        const response = await Videogame.findAll(options)
-        return response
-    }
+  if (id) {
+    const response = await Videogame.findByPk(id, options);
+    return formatVideogame(response);
+  } else {
+    const response = await Videogame.findAll(options);
+    const formattedVideogames = response.map((videogame) => formatVideogame(videogame));
+    return formattedVideogames;
+  }
+};
 
-}
+const formatVideogame = (videogame) => {
+  const formattedPlatforms = videogame.platforms.map((platform) => platform.name);
+  const formattedGenres = videogame.genres.map((genre) => genre.name);
 
-module.exports = getVideogameFromDatabase
+  return {
+    ...videogame.toJSON(),
+    platforms: formattedPlatforms,
+    genres: formattedGenres,
+  };
+};
+
+module.exports = getVideogameFromDatabase;
