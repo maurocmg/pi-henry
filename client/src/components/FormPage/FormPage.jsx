@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './FormPage.module.css';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios';
 
 const FormPage = () => {
   const [gameData, setGameData] = useState({
@@ -14,6 +14,9 @@ const FormPage = () => {
     genres: []
   });
 
+  const [genres, setGenres] = useState([]);
+  const [platforms, setPlatforms] = useState([]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setGameData((prevData) => ({
@@ -23,23 +26,33 @@ const FormPage = () => {
   };
 
   const handlePlatformsChange = (e) => {
-    const selectedPlatforms = Array.from(e.target.options)
-      .filter((option) => option.selected)
-      .map((option) => option.value);
-    setGameData((prevData) => ({
-      ...prevData,
-      platforms: selectedPlatforms
-    }));
+    const { value, checked } = e.target;
+    if (checked) {
+      setGameData((prevData) => ({
+        ...prevData,
+        platforms: [...prevData.platforms, parseInt(value)]
+      }));
+    } else {
+      setGameData((prevData) => ({
+        ...prevData,
+        platforms: prevData.platforms.filter((platform) => platform !== parseInt(value))
+      }));
+    }
   };
-
+  
   const handleGenresChange = (e) => {
-    const selectedGenres = Array.from(e.target.options)
-      .filter((option) => option.selected)
-      .map((option) => option.value);
-    setGameData((prevData) => ({
-      ...prevData,
-      genres: selectedGenres
-    }));
+    const { value, checked } = e.target;
+    if (checked) {
+      setGameData((prevData) => ({
+        ...prevData,
+        genres: [...prevData.genres, parseInt(value)]
+      }));
+    } else {
+      setGameData((prevData) => ({
+        ...prevData,
+        genres: prevData.genres.filter((genre) => genre !== parseInt(value))
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -51,13 +64,36 @@ const FormPage = () => {
     console.log(gameData);
   };
 
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/genres/'); // Cambia la ruta según corresponda
+        setGenres(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const fetchPlatforms = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/platforms/'); // Cambia la ruta según corresponda
+        setPlatforms(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchGenres();
+    fetchPlatforms();
+  }, []);
+
   return (
     <div className={styles.formPage}>
       <h2 className={styles.title}>Create New Game</h2>
 
       {/* Agregar el botón para volver a HomePage */}
       <Link to="/home" className={styles.backButton}>
-        &lt; Back to Home
+        Volver a la página de inicio
       </Link>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
@@ -96,19 +132,22 @@ const FormPage = () => {
           ></textarea>
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="platforms" className={styles.label}>Platforms:</label>
-          <select
-            id="platforms"
-            name="platforms"
-            multiple
-            onChange={handlePlatformsChange}
-            required
-            className={styles.select}
-          >
-            <option value="PS4">PS4</option>
-            <option value="Xbox One">Xbox One</option>
-            <option value="Nintendo Switch">Nintendo Switch</option>
-          </select>
+          <label className={styles.label}>Platforms:</label>
+          <div className={styles.checkboxGroup}>
+          {platforms.map((platform) => (
+            <label key={platform.id} className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                name="platforms"
+                value={platform.id}
+                checked={gameData.platforms.includes(platform.id)}
+                onChange={handlePlatformsChange}
+                className={styles.checkbox}
+              />
+              {platform.name}
+            </label>
+          ))}
+          </div>
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="releaseDate" className={styles.label}>Release Date:</label>
@@ -137,21 +176,22 @@ const FormPage = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="genres" className={styles.label}>Genres:</label>
-          <select
-            id="genres"
-            name="genres"
-            multiple
-            onChange={handleGenresChange}
-            required
-            className={styles.select}
-          >
-            <option value="Action">Action</option>
-            <option value="Adventure">Adventure</option>
-            <option value="RPG">RPG</option>
-            <option value="Strategy">Strategy</option>
-            <option value="Sports">Sports</option>
-          </select>
+          <label className={styles.label}>Genres:</label>
+          <div className={styles.checkboxGroup}>
+          {genres.map((genre) => (
+            <label key={genre.id} className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                name="genres"
+                value={genre.id}
+                checked={gameData.genres.includes(genre.id)}
+                onChange={handleGenresChange}
+                className={styles.checkbox}
+              />
+              {genre.name}
+            </label>
+          ))}
+        </div>
         </div>
         <button type="submit" className={styles.button}>Create Game</button>
       </form>

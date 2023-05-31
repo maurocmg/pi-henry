@@ -27,10 +27,9 @@ const getVideogamesById = async ( req, res ) => {
             // res.status(200).json( { id, name, description, background_image, released, rating, platforms })
             res.status(200).json({ id, name, description, background_image, released, rating, platforms, genres })
         } catch (error) {
-            res.status(500).json('error en axios')
+            res.status(404).json('No existe el juego')
         }
     } else {
-        const search = id.slice(1, -1)
         if (uuidValidate(id)){ 
             const found = await getVideogameFromDatabase(id)
             

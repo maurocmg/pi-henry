@@ -65,3 +65,23 @@
     margin-bottom: 10px;
     text-decoration: none;
   }
+
+  .checkboxLabel {
+    display: flex;
+    align-items: center;
+    color: #fff;
+  }
+  
+  .checkboxLabel input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  
+  .checkboxLabel:hover {
+    text-decoration: underline;
+  }
+  
+  .checkboxGroup {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
