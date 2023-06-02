@@ -1,27 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import styles from './FormPage.module.css';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { getGenres, getPlatforms } from './utils';
+import { validator } from './validator';
+import axios from 'axios'; // Import Axios
+
+
 
 const FormPage = () => {
   const [gameData, setGameData] = useState({
     name: '',
-    image: '',
+    background_image: '',
     description: '',
     platforms: [],
-    releaseDate: '',
+    released: '',
     rating: '',
     genres: []
   });
 
   const [genres, setGenres] = useState([]);
   const [platforms, setPlatforms] = useState([]);
+  const [errors, setErrors] = useState({});
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setGameData((prevData) => ({
       ...prevData,
       [name]: value
+    }));
+  
+    const formErrors = validator({
+      ...gameData,
+      [name]: value
+    });
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: formErrors[name]
     }));
   };
 
@@ -38,6 +53,17 @@ const FormPage = () => {
         platforms: prevData.platforms.filter((platform) => platform !== parseInt(value))
       }));
     }
+  
+    const formErrors = validator({
+      ...gameData,
+      platforms: checked
+        ? [...gameData.platforms, parseInt(value)]
+        : gameData.platforms.filter((platform) => platform !== parseInt(value))
+    });
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      platforms: formErrors.platforms
+    }));
   };
   
   const handleGenresChange = (e) => {
@@ -53,38 +79,53 @@ const FormPage = () => {
         genres: prevData.genres.filter((genre) => genre !== parseInt(value))
       }));
     }
+  
+    const formErrors = validator({
+      ...gameData,
+      genres: checked
+        ? [...gameData.genres, parseInt(value)]
+        : gameData.genres.filter((genre) => genre !== parseInt(value))
+    });
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      genres: formErrors.genres
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Aquí puedes realizar las validaciones que desees antes de enviar los datos
+    const formErrors = validator(gameData);
+    setErrors(formErrors);
 
-    // Ejemplo de impresión de los datos del juego
-    console.log(gameData);
+    if (Object.keys(formErrors).length === 0) {
+      try {
+        const response = await axios.post("http://localhost:3001/videogames", gameData);
+
+        if (response.status === 201) {
+          const newVideogame = response.data;
+          console.log(newVideogame);
+          // Optionally, you can redirect to another page or perform additional actions
+        } else {
+          // Handle the error response
+          console.error("Error:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
+    }
   };
 
   useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/genres/'); // Cambia la ruta según corresponda
-        setGenres(response.data);
-      } catch (error) {
-        console.error(error);
-      }
+    const getData = async () => {
+      const genresData = await getGenres();
+      const platformsData = await getPlatforms();
+
+      setGenres(genresData);
+      setPlatforms(platformsData);
     };
 
-    const fetchPlatforms = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/platforms/'); // Cambia la ruta según corresponda
-        setPlatforms(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchGenres();
-    fetchPlatforms();
+    getData();
   }, []);
 
   return (
@@ -97,7 +138,10 @@ const FormPage = () => {
       </Link>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
-          <label htmlFor="name" className={styles.label}>Name:</label>
+        <label htmlFor="name" className={`${styles.label} ${errors.name && styles.errorLabel}`}>
+          Name:
+          {errors.name && <span className={styles.errorMessage}>{errors.name}</span>}
+        </label>
           <input
             type="text"
             id="name"
@@ -109,19 +153,25 @@ const FormPage = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="image" className={styles.label}>Image URL:</label>
+        <label htmlFor="background_image" className={`${styles.label} ${errors.background_image && styles.errorLabel}`}>
+            Image URL:
+            {errors.background_image && <span className={styles.errorMessage}>{errors.background_image}</span>}
+        </label>
           <input
             type="text"
-            id="image"
-            name="image"
-            value={gameData.image}
+            id="background_image"
+            name="background_image"
+            value={gameData.background_image}
             onChange={handleChange}
             required
             className={styles.input}
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="description" className={styles.label}>Description:</label>
+        <label htmlFor="description" className={`${styles.label} ${errors.description && styles.errorLabel}`}>
+            Description:
+            {errors.description && <span className={styles.errorMessage}>{errors.description}</span>}
+        </label>
           <textarea
             id="description"
             name="description"
@@ -148,14 +198,18 @@ const FormPage = () => {
             </label>
           ))}
           </div>
+          {errors.platforms && <span className={styles.errorMessage}>{errors.platforms}</span>}
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="releaseDate" className={styles.label}>Release Date:</label>
+        <label htmlFor="released" className={`${styles.label} ${errors.released && styles.errorLabel}`}>
+            Release Date:
+            {errors.released && <span className={styles.errorMessage}>{errors.released}</span>}
+        </label>
           <input
             type="date"
-            id="releaseDate"
-            name="releaseDate"
-            value={gameData.releaseDate}
+            id="released"
+            name="released"
+            value={gameData.released}
             onChange={handleChange}
             required
             className={styles.input}
@@ -191,7 +245,8 @@ const FormPage = () => {
               {genre.name}
             </label>
           ))}
-        </div>
+          </div>
+        {errors.genres && <span className={styles.errorMessage}>{errors.genres}</span>}
         </div>
         <button type="submit" className={styles.button}>Create Game</button>
       </form>

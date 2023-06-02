@@ -85,3 +85,12 @@
     flex-wrap: wrap;
     margin-bottom: 10px;
   }
+
+  .errorLabel {
+    color: red;
+  }
+  
+  .errorMessage {
+    color: red;
+    font-size: 0.8rem;
+  }

@@ -5,7 +5,8 @@ import styles from './GameList.module.css';
 
 const GameList = ({ genreFilter, sortOrder, searchTerm }) => {
   const [games, setGames] = useState([]);
-  
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     const fetchGames = async () => {
       try {
@@ -35,13 +36,22 @@ const GameList = ({ genreFilter, sortOrder, searchTerm }) => {
         }
 
         // Ordenar por clasificación
-        if (sortOrder === 'asc') {
-          filteredGames = filteredGames.sort((a, b) => a.rating - b.rating);
-        } else if (sortOrder === 'desc') {
-          filteredGames = filteredGames.sort((a, b) => b.rating - a.rating);
+        if (sortOrder === 'rating_asc') {
+          filteredGames = filteredGames.sort((a, b) => parseFloat(a.rating) - parseFloat(b.rating));
+        } else if (sortOrder === 'rating_desc') {
+          filteredGames = filteredGames.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+        } else if (sortOrder === 'name_asc') {
+          filteredGames = filteredGames.sort((a, b) =>
+            a.name.localeCompare(b.name)
+          );
+        } else if (sortOrder === 'name_desc') {
+          filteredGames = filteredGames.sort((a, b) =>
+            b.name.localeCompare(a.name)
+          );
         }
 
         setGames(filteredGames);
+        setCurrentPage(1)
       } catch (error) {
         console.error('Error fetching games:', error);
       }
@@ -51,7 +61,6 @@ const GameList = ({ genreFilter, sortOrder, searchTerm }) => {
   }, [genreFilter, sortOrder, searchTerm]);
 
 
-  const [currentPage, setCurrentPage] = useState(1);
   const gamesPerPage = 15;
   const indexOfLastGame = currentPage * gamesPerPage;
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
