@@ -4,8 +4,10 @@ require('dotenv').config();
 const { API_KEY } = process.env;
 const API_URL = 'https://api.rawg.io/api';
 const express = require('express');
+const { Op } = require('sequelize');
 
-const getVideogameFromDatabase = async (id = null) => {
+
+const getVideogameFromDatabase = async (id = null, name = null) => {
   let options = {
     include: [
       {
@@ -24,9 +26,20 @@ const getVideogameFromDatabase = async (id = null) => {
   if (id) {
     const response = await Videogame.findByPk(id, options);
     return formatVideogame(response);
+  } else if (name) {
+    const response = await Videogame.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`
+        }
+      },
+      ...options
+    });
+    const formattedVideogames = response?.map((videogame) => formatVideogame(videogame));
+    return formattedVideogames;
   } else {
     const response = await Videogame.findAll(options);
-    const formattedVideogames = response.map((videogame) => formatVideogame(videogame));
+    const formattedVideogames = response?.map((videogame) => formatVideogame(videogame));
     return formattedVideogames;
   }
 };

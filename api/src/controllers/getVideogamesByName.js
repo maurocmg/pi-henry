@@ -4,6 +4,8 @@ require('dotenv').config();
 const { API_KEY } = process.env;
 const API_URL = 'https://api.rawg.io/api';
 const express = require('express');
+const getVideogameFromDatabase = require('../handlers/getVideogameFromDatabase'); // Importa la función
+
 
 const getVideogamesByName = async (req, res) => {
 
@@ -15,7 +17,7 @@ const getVideogamesByName = async (req, res) => {
 
     try {
         const response = await axios.get(`${API_URL}/games?search=${name}&page_size=15&key=${API_KEY}`);
-        const games = response.data.results.map(game => {
+        const apiGames = response.data.results.map(game => {
             return { 
                 id: game.id, 
                 name: game.name, 
@@ -35,12 +37,18 @@ const getVideogamesByName = async (req, res) => {
                 }).map(obj => obj.genre) 
             }
         })
-        if (games.length === 0) {
+
+      //  console.log(response)
+        const gamesDatabase = await getVideogameFromDatabase(null, name); // Obtén los juegos de la base de datos
+      //  console.log(gamesDatabase)
+        const allGames = [...apiGames, ...gamesDatabase]; // Combina los juegos de la API y de la base de datos
+
+        if (allGames.length === 0) {
             return res.status(404).json({ message: 'No se encontraron resultados para la búsqueda realizada.' });
           }
-        res.status(200).json(games)    
+        res.status(200).json(allGames)    
     } catch (error) {
-        res.status(500).json('la cagaste wey')
+        res.status(500).json({error : error.message})
     }
 
 }

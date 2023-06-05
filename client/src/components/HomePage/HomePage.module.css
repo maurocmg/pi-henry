@@ -28,7 +28,15 @@
   }
   
   .filterOptions {
+    display: flex;
+    align-items: center;
     margin-top: 10px;
+  }
+
+  .filterOption {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
   }
   
   label {
