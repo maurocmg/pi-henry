@@ -16,50 +16,57 @@ const GameList = ({ genreFilter, sortOrder, searchTerm, originFilter }) => {
             const response = await axios.get('http://localhost:3001/videogames');
             filteredGames = response.data.videogames;
           } else {
-            const response = await axios.get(
-              `http://localhost:3001/videogames/name?name=${searchTerm}`
-            );
-            filteredGames = response.data;
+            try {
+              const response = await axios.get(
+                `http://localhost:3001/videogames/name?name=${searchTerm}`
+              );
+              filteredGames = response.data;
+            } catch (error) {
+              if (error.response && error.response.status === 404) {
+                window.alert('No se encontraron juegos con ese nombre.');
+              } else {
+                throw error;
+              }
+            }
           }
-        
 
-        // Filtrar por género
-        if (genreFilter) {
-          filteredGames = filteredGames.filter((game) => game.genres.includes(genreFilter));
-        }
+          // Filtrar por género
+          if (genreFilter) {
+            filteredGames = filteredGames.filter((game) => game.genres.includes(genreFilter));
+          }
 
-        // Filtrar por término de búsqueda
-        if (searchTerm) {
-          filteredGames = filteredGames.filter((game) =>
-            game.name.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        }
+          // Filtrar por término de búsqueda
+          if (searchTerm) {
+            filteredGames = filteredGames.filter((game) =>
+              game.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+          }
 
-        // Ordenar por clasificación
-        if (sortOrder === 'rating_asc') {
-          filteredGames = filteredGames.sort((a, b) => parseFloat(a.rating) - parseFloat(b.rating));
-        } else if (sortOrder === 'rating_desc') {
-          filteredGames = filteredGames.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
-        } else if (sortOrder === 'name_asc') {
-          filteredGames = filteredGames.sort((a, b) =>
-            a.name.localeCompare(b.name)
-          );
-        } else if (sortOrder === 'name_desc') {
-          filteredGames = filteredGames.sort((a, b) =>
-            b.name.localeCompare(a.name)
-          );
-        }
+          // Ordenar por clasificación
+          if (sortOrder === 'rating_asc') {
+            filteredGames = filteredGames.sort((a, b) => parseFloat(a.rating) - parseFloat(b.rating));
+          } else if (sortOrder === 'rating_desc') {
+            filteredGames = filteredGames.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+          } else if (sortOrder === 'name_asc') {
+            filteredGames = filteredGames.sort((a, b) =>
+              a.name.localeCompare(b.name)
+            );
+          } else if (sortOrder === 'name_desc') {
+            filteredGames = filteredGames.sort((a, b) =>
+              b.name.localeCompare(a.name)
+            );
+          }
 
-        if (originFilter === 'base_de_datos') {
-          filteredGames = filteredGames.filter((game) => game.id.toString().match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/));
-        } else if (originFilter === 'API') {
-          filteredGames = filteredGames.filter((game) => !game.id.toString().match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/));
-        }
+          if (originFilter === 'base_de_datos') {
+            filteredGames = filteredGames.filter((game) => game.id.toString().match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/));
+          } else if (originFilter === 'API') {
+            filteredGames = filteredGames.filter((game) => !game.id.toString().match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/));
+          }
 
-        setGames(filteredGames);
-        setCurrentPage(1)
+          setGames(filteredGames);
+          setCurrentPage(1)
       } catch (error) {
-        console.error('Error fetching games:', error);
+        console.error('Error de servidor:', error);
       }
     };
 

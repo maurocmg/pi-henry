@@ -12,7 +12,7 @@ const getVideogamesByName = async (req, res) => {
     const { name } = req.query;
     // const pattern = name
     // // console.log(req.query);
-    console.log(name)
+    //console.log(name)
     // res.status(200).json('name')
 
     try {
@@ -39,9 +39,9 @@ const getVideogamesByName = async (req, res) => {
         })
 
       //  console.log(response)
-        const gamesDatabase = await getVideogameFromDatabase(null, name); // Obtén los juegos de la base de datos
+        const gamesDatabase = await getVideogameFromDatabase(null, name); 
       //  console.log(gamesDatabase)
-        const allGames = [...apiGames, ...gamesDatabase]; // Combina los juegos de la API y de la base de datos
+        const allGames = [...apiGames, ...gamesDatabase]; 
 
         if (allGames.length === 0) {
             return res.status(404).json({ message: 'No se encontraron resultados para la búsqueda realizada.' });
