@@ -3,8 +3,8 @@ import styles from './FormPage.module.css';
 import { Link } from 'react-router-dom';
 import { getGenres, getPlatforms } from './utils';
 import { validator } from './validator';
-import axios from 'axios'; // Import Axios
-import Card from '../Card/Card'; // Import the Card component
+import axios from 'axios'; 
+import Card from '../Card/Card'; 
 
 
 
@@ -141,7 +141,7 @@ const FormPage = () => {
 
   return (
     <div className={styles.formPage}>
-      <h2 className={styles.title}>Create New Game</h2>
+      <h2 className={styles.title}>Crear nuevo Videogame</h2>
 
       {/* Agregar el botón para volver a HomePage */}
       <Link to="/home" className={styles.backButton}>
@@ -173,7 +173,7 @@ const FormPage = () => {
             name="name"
             value={gameData.name}
             onChange={handleChange}
-            required
+            // required
             className={styles.input}
           />
         </div>
@@ -188,7 +188,7 @@ const FormPage = () => {
             name="background_image"
             value={gameData.background_image}
             onChange={handleChange}
-            required
+            // required
             className={styles.input}
           />
         </div>
@@ -202,7 +202,7 @@ const FormPage = () => {
             name="description"
             value={gameData.description}
             onChange={handleChange}
-            required
+            // required
             className={styles.textarea}
           ></textarea>
         </div>
@@ -231,18 +231,30 @@ const FormPage = () => {
             {errors.released && <span className={styles.errorMessage}>{errors.released}</span>}
         </label>
           <input
-            type="date"
+            type="text"
             id="released"
             name="released"
             value={gameData.released}
             onChange={handleChange}
-            required
+            // required
             className={styles.input}
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="rating" className={styles.label}>Rating:</label>
+          <label htmlFor="rating" className={`${styles.label} ${errors.rating && styles.errorLabel}`}>
+            Rating:
+            {errors.rating && <span className={styles.errorMessage}>{errors.rating}</span>}
+          </label>
           <input
+            type="text" 
+            id="rating"
+            name="rating"
+            value={gameData.rating}
+            onChange={handleChange}
+            // required
+            className={styles.input}
+          />
+          {/* <input
             type="number"
             id="rating"
             name="rating"
@@ -252,7 +264,7 @@ const FormPage = () => {
             onChange={handleChange}
             required
             className={styles.input}
-          />
+          /> */}
         </div>
         <div className={styles.formGroup}>
           <label className={styles.label}>Genres:</label>
