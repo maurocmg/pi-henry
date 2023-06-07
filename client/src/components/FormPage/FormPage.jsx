@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { getGenres, getPlatforms } from './utils';
 import { validator } from './validator';
 import axios from 'axios'; // Import Axios
+import Card from '../Card/Card'; // Import the Card component
+
 
 
 
@@ -21,6 +23,8 @@ const FormPage = () => {
   const [genres, setGenres] = useState([]);
   const [platforms, setPlatforms] = useState([]);
   const [errors, setErrors] = useState({});
+  const [createdVideogame, setCreatedVideogame] = useState(null); 
+
 
 
   const handleChange = (e) => {
@@ -104,11 +108,18 @@ const FormPage = () => {
 
         if (response.status === 201) {
           const newVideogame = response.data;
-          console.log(newVideogame);
-          // Optionally, you can redirect to another page or perform additional actions
-        } else {
-          // Handle the error response
-          console.error("Error:", response.statusText);
+          setCreatedVideogame(newVideogame); // Set the created videogame
+          setGameData({
+            name: '',
+            background_image: '',
+            description: '',
+            platforms: [],
+            released: '',
+            rating: '',
+            genres: []
+          }); // Reset the form data          
+        } else if (response.status === 202) {
+          window.alert('El videojuego ya existe!');
         }
       } catch (error) {
         console.error("Error:", error.message);
@@ -137,6 +148,20 @@ const FormPage = () => {
         Volver a la página de inicio
       </Link>
       <form onSubmit={handleSubmit} className={styles.form}>
+
+      {createdVideogame ? ( // Render the created videogame if it exists
+          <div className={styles.successMessage}>
+            <p>Nuevo videojuego creado!</p>
+            <div className={styles.cardContainer}>
+              <Card game={createdVideogame} />
+            </div>  
+          </div>
+        // ) : errors.postError ? (
+        //   <div className={styles.successMessage}>
+        //     <p>{errors.postError}</p>
+        //   </div>
+        ) : null}
+
         <div className={styles.formGroup}>
         <label htmlFor="name" className={`${styles.label} ${errors.name && styles.errorLabel}`}>
           Name:

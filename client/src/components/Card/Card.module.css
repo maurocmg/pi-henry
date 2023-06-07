@@ -19,6 +19,7 @@
     height: auto;
     border-radius: 8px;
     margin-bottom: 16px;
+    object-fit: cover;
   }
   
   .cardContent {

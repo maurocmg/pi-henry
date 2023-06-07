@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from './HomePage.module.css';
 import GameList from '../GameList/GameList';
-import { Link } from 'react-router-dom';
-import { getGenres, getPlatforms } from '../FormPage/utils'; // Import the utility functions
-import NavBar from '../NavBar/NavBar'; // Import the NavBar component
+//import { Link } from 'react-router-dom';
+import { getGenres, /*getPlatforms*/ } from '../FormPage/utils'; 
+import NavBar from '../NavBar/NavBar'; 
 
 
 const HomePage = () => {
@@ -11,16 +11,15 @@ const HomePage = () => {
   const [genreFilter, setGenreFilter] = useState('');
   const [sortOrder, setSortOrder] = useState('');
   const [genres, setGenres] = useState([]);
-  const [platforms, setPlatforms] = useState([]);
+//  const [platforms, setPlatforms] = useState([]);
   const [originFilter, setOriginFilter] = useState('');
 
   useEffect(() => {
-    // Fetch the list of genres and platforms when the component mounts
     const fetchGenresAndPlatforms = async () => {
-      const fetchedGenres = await getGenres();
-      const fetchedPlatforms = await getPlatforms();
-      setGenres(fetchedGenres);
-      setPlatforms(fetchedPlatforms);
+    const fetchedGenres = await getGenres();
+//      const fetchedPlatforms = await getPlatforms();
+    setGenres(fetchedGenres);
+//      setPlatforms(fetchedPlatforms);
     };
 
     fetchGenresAndPlatforms();

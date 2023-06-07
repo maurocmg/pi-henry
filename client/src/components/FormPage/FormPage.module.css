@@ -94,3 +94,20 @@
     color: red;
     font-size: 0.8rem;
   }
+
+  .successMessage {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+    /* width: 80%; */
+    /* justify-content: center;
+    display: flex; */
+  }
+
+  .cardContainer {
+    /* width: 30%; */
+    justify-content: center;
+    display: flex;
+    margin: 0 auto;
+  }

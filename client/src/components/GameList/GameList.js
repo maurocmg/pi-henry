@@ -3,7 +3,7 @@ import axios from 'axios';
 import Card from '../Card/Card';
 import styles from './GameList.module.css';
 
-const GameList = ({ genreFilter, sortOrder, searchTerm }) => {
+const GameList = ({ genreFilter, sortOrder, searchTerm, originFilter }) => {
   const [games, setGames] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -50,6 +50,12 @@ const GameList = ({ genreFilter, sortOrder, searchTerm }) => {
           );
         }
 
+        if (originFilter === 'base_de_datos') {
+          filteredGames = filteredGames.filter((game) => game.id.toString().match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/));
+        } else if (originFilter === 'API') {
+          filteredGames = filteredGames.filter((game) => !game.id.toString().match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/));
+        }
+
         setGames(filteredGames);
         setCurrentPage(1)
       } catch (error) {
@@ -58,7 +64,7 @@ const GameList = ({ genreFilter, sortOrder, searchTerm }) => {
     };
 
     fetchGames();
-  }, [genreFilter, sortOrder, searchTerm]);
+  }, [genreFilter, sortOrder, searchTerm, originFilter]);
 
 
   const gamesPerPage = 15;
@@ -91,16 +97,28 @@ const GameList = ({ genreFilter, sortOrder, searchTerm }) => {
                 </div>
             ))}
         </div>
-            <div className={styles.pageIndicator}>
-                {Array.from({ length: totalPages }, (_, index) => (
-                <button
-                key={index}
-                className={currentPage === index + 1 ? styles.active : ''}
-                onClick={() => handlePageChange(index + 1)}
-                >
-                {index + 1}
-                </button>
-                ))}
+        <div className={styles.pageIndicator}>
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+        >
+          Previous
+        </button>
+        {Array.from({ length: totalPages }, (_, index) => (
+        <button
+        key={index}
+        className={currentPage === index + 1 ? styles.active : ''}
+        onClick={() => handlePageChange(index + 1)}
+        >
+        {index + 1}
+        </button>
+        ))}
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => handlePageChange(currentPage + 1)}
+        >
+          Next 
+        </button>
         </div>
     </div>
   );
