@@ -1,6 +1,6 @@
 const { Videogame, Genre, Platform } = require('../db');
 const { v4: uuidv4 } = require('uuid');
-const validator = require('./validator'); // Import the validator
+const validator = require('./validator'); 
 
 const createVideogame = async (req, res) => {
   const { name, description, platforms, background_image, released, rating, genres } = req.body;

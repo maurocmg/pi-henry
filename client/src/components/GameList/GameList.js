@@ -109,7 +109,7 @@ const GameList = ({ genreFilter, sortOrder, searchTerm, originFilter }) => {
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
-          Previous
+          Anterior
         </button>
         {Array.from({ length: totalPages }, (_, index) => (
         <button
@@ -124,7 +124,7 @@ const GameList = ({ genreFilter, sortOrder, searchTerm, originFilter }) => {
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
-          Next 
+          Siguiente 
         </button>
         </div>
     </div>

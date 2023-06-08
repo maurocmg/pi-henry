@@ -108,7 +108,7 @@ const FormPage = () => {
 
         if (response.status === 201) {
           const newVideogame = response.data;
-          setCreatedVideogame(newVideogame); // Set the created videogame
+          setCreatedVideogame(newVideogame); 
           setGameData({
             name: '',
             background_image: '',
@@ -117,7 +117,7 @@ const FormPage = () => {
             released: '',
             rating: '',
             genres: []
-          }); // Reset the form data          
+          });         
         } else if (response.status === 202) {
           window.alert('El videojuego ya existe!');
         }
@@ -143,13 +143,12 @@ const FormPage = () => {
     <div className={styles.formPage}>
       <h2 className={styles.title}>Crear nuevo Videogame</h2>
 
-      {/* Agregar el botón para volver a HomePage */}
       <Link to="/home" className={styles.backButton}>
         Volver a la página de inicio
       </Link>
       <form onSubmit={handleSubmit} className={styles.form}>
 
-      {createdVideogame ? ( // Render the created videogame if it exists
+      {createdVideogame ? ( 
           <div className={styles.successMessage}>
             <p>Nuevo videojuego creado!</p>
             <div className={styles.cardContainer}>
@@ -164,7 +163,7 @@ const FormPage = () => {
 
         <div className={styles.formGroup}>
         <label htmlFor="name" className={`${styles.label} ${errors.name && styles.errorLabel}`}>
-          Name:
+          Nombre:
           {errors.name && <span className={styles.errorMessage}>{errors.name}</span>}
         </label>
           <input
@@ -179,7 +178,7 @@ const FormPage = () => {
         </div>
         <div className={styles.formGroup}>
         <label htmlFor="background_image" className={`${styles.label} ${errors.background_image && styles.errorLabel}`}>
-            Image URL:
+            URL de imagen:
             {errors.background_image && <span className={styles.errorMessage}>{errors.background_image}</span>}
         </label>
           <input
@@ -194,7 +193,7 @@ const FormPage = () => {
         </div>
         <div className={styles.formGroup}>
         <label htmlFor="description" className={`${styles.label} ${errors.description && styles.errorLabel}`}>
-            Description:
+            Descripción:
             {errors.description && <span className={styles.errorMessage}>{errors.description}</span>}
         </label>
           <textarea
@@ -207,7 +206,7 @@ const FormPage = () => {
           ></textarea>
         </div>
         <div className={styles.formGroup}>
-          <label className={styles.label}>Platforms:</label>
+          <label className={styles.label}>Plataformas:</label>
           <div className={styles.checkboxGroup}>
           {platforms.map((platform) => (
             <label key={platform.id} className={styles.checkboxLabel}>
@@ -227,7 +226,7 @@ const FormPage = () => {
         </div>
         <div className={styles.formGroup}>
         <label htmlFor="released" className={`${styles.label} ${errors.released && styles.errorLabel}`}>
-            Release Date:
+            Fecha de lanzamiento:
             {errors.released && <span className={styles.errorMessage}>{errors.released}</span>}
         </label>
           <input
@@ -267,7 +266,7 @@ const FormPage = () => {
           /> */}
         </div>
         <div className={styles.formGroup}>
-          <label className={styles.label}>Genres:</label>
+          <label className={styles.label}>Géneros:</label>
           <div className={styles.checkboxGroup}>
           {genres.map((genre) => (
             <label key={genre.id} className={styles.checkboxLabel}>
@@ -285,7 +284,7 @@ const FormPage = () => {
           </div>
         {errors.genres && <span className={styles.errorMessage}>{errors.genres}</span>}
         </div>
-        <button type="submit" className={styles.button}>Create Game</button>
+        <button type="submit" className={styles.button}>Crear Videogame</button>
       </form>
     </div>
   );

@@ -15,7 +15,7 @@ const DetailPage = () => {
         const response = await axios.get(`http://localhost:3001/videogames/${gameId}`);
         setGame(response.data);
       } catch (error) {
-        console.error('Error fetching game:', error);
+        console.error('Error cargando videogame:', error);
       }
     };
 

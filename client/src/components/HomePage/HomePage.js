@@ -43,7 +43,7 @@ const HomePage = () => {
 
   return (
     <div className={styles.homePage}>
-      <NavBar onSearch={handleSearch} /> {/* Render the NavBar component */}
+      <NavBar onSearch={handleSearch} /> 
       
       <div className={styles.filterOptions}>
         <div className={styles.filterOption}>
